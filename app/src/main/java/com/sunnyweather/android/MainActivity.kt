@@ -5,10 +5,8 @@ import android.os.Bundle
 import com.sunnyweather.android.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var activityMainBinding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
-        activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
-        setContentView(activityMainBinding.root)
+        setContentView(R.layout.activity_main)
     }
 }
