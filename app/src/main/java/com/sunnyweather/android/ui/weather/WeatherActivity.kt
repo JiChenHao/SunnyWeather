@@ -44,6 +44,7 @@ class WeatherActivity : AppCompatActivity() {
         if (viewModel.placeName.isEmpty()) {
             viewModel.placeName = intent.getStringExtra("place_name") ?: ""
         }
+        //刷新并接受信息变化
         viewModel.weatherLiveData.observe(this, Observer { result ->
             val weather = result.getOrNull()
             if (weather != null) {
@@ -52,8 +53,21 @@ class WeatherActivity : AppCompatActivity() {
                 Toast.makeText(this, "无法成功获取天气信息", Toast.LENGTH_SHORT).show()
                 result.exceptionOrNull()?.printStackTrace()
             }
+            activityWeatherBinding.swipeRefresh.isRefreshing = false//刷新结束，隐藏下拉刷新进度条
         })
+        //==START==刷新事件
+        activityWeatherBinding.swipeRefresh.setColorSchemeResources(R.color.colorPrimary)//设置下拉刷新进度条的颜色
+        refreshWeather()
+        activityWeatherBinding.swipeRefresh.setOnRefreshListener {//下拉刷新监听器
+            refreshWeather()
+        }
+        //==END==刷新事件
+    }
+
+    //刷新天气信息
+    fun refreshWeather() {
         viewModel.refreshWeather(viewModel.locationLng, viewModel.locationLat)
+        activityWeatherBinding.swipeRefresh.isRefreshing = true//显示下拉刷新进度条
     }
 
     private fun showWeatherInfo(weather: Weather) {

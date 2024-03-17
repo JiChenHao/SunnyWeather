@@ -1,30 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/weatherLayout"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/swipeRefresh"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:overScrollMode="never"
-    android:scrollbars="none"
-    android:visibility="invisible">
-
-    <LinearLayout
-        android:id="@+id/weatherLayoutSubLinear"
+    android:layout_height="match_parent">
+    <!--在ScrollView外面套上一层SwipeRefreshLayout，这样ScrollView就自动拥有下拉刷新功能了-->
+    <ScrollView
+        android:id="@+id/weatherLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        android:visibility="invisible">
 
-        <include
-            android:id="@+id/nowLayout"
-            layout="@layout/now" />
+        <LinearLayout
+            android:id="@+id/weatherLayoutSubLinear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-        <include
-            android:id="@+id/forecastLayout"
-            layout="@layout/forecast" />
+            <include
+                android:id="@+id/nowLayout"
+                layout="@layout/now" />
 
-        <include
-            android:id="@+id/life_indexLayout"
-            layout="@layout/life_index" />
-    </LinearLayout>
+            <include
+                android:id="@+id/forecastLayout"
+                layout="@layout/forecast" />
 
-</ScrollView>
+            <include
+                android:id="@+id/life_indexLayout"
+                layout="@layout/life_index" />
+        </LinearLayout>
+
+    </ScrollView>
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
