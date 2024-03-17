@@ -1,13 +1,17 @@
 package com.sunnyweather.android.ui.weather
 
+import android.content.Context
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -22,11 +26,12 @@ import java.util.Locale
 
 class WeatherActivity : AppCompatActivity() {
     val viewModel by lazy { ViewModelProvider(this).get(WeatherViewModel::class.java) }
-    private lateinit var activityWeatherBinding: ActivityWeatherBinding
+    lateinit var activityWeatherBinding: ActivityWeatherBinding
     override fun onCreate(savedInstanceState: Bundle?) {
-        activityWeatherBinding = ActivityWeatherBinding.inflate(layoutInflater)
-
         super.onCreate(savedInstanceState)
+        activityWeatherBinding = ActivityWeatherBinding.inflate(layoutInflater)
+        setContentView(activityWeatherBinding.root)
+
         //====START美化界面，将Activity布局设置到状态栏上面并将状态栏设置为透明
         val decorView = window.decorView
         decorView.systemUiVisibility =
@@ -34,7 +39,7 @@ class WeatherActivity : AppCompatActivity() {
                     View.SYSTEM_UI_FLAG_LAYOUT_STABLE
         window.statusBarColor = Color.TRANSPARENT
         //====END美化界面
-        setContentView(activityWeatherBinding.root)
+
         if (viewModel.locationLng.isEmpty()) {
             viewModel.locationLng = intent.getStringExtra("location_lng") ?: ""
         }
@@ -62,6 +67,28 @@ class WeatherActivity : AppCompatActivity() {
             refreshWeather()
         }
         //==END==刷新事件
+
+        //# START==滑动菜单的处理逻辑
+        activityWeatherBinding.nowLayout.navBtn.setOnClickListener {
+            //## 在切换城市按钮的点击事件中调用DrawerLayout的openDrawer()打开滑动菜单
+            activityWeatherBinding.drawerLayout.openDrawer(GravityCompat.START)
+        }
+        activityWeatherBinding.drawerLayout.addDrawerListener(object :
+            DrawerLayout.DrawerListener {
+            //## 监听DrawerLayout的状态，当滑动菜单被隐藏的时候，同时隐藏输入法
+            override fun onDrawerStateChanged(newState: Int) {}
+            override fun onDrawerSlide(drawerView: View, slideOffset: Float) {}
+            override fun onDrawerOpened(drawerView: View) {}
+            override fun onDrawerClosed(drawerView: View) {
+                val manager = getSystemService(Context.INPUT_METHOD_SERVICE)
+                        as InputMethodManager
+                manager.hideSoftInputFromWindow(
+                    drawerView.windowToken,
+                    InputMethodManager.HIDE_NOT_ALWAYS
+                )
+            }
+        })
+        //# END==滑动菜单的处理逻辑
     }
 
     //刷新天气信息
