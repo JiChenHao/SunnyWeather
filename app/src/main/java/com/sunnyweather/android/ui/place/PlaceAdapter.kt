@@ -14,7 +14,7 @@ import com.sunnyweather.android.ui.weather.WeatherActivity
 import org.w3c.dom.Text
 
 //RecyclerView的适配器
-class PlaceAdapter(private val fragment: Fragment, private val placeList: List<Place>) :
+class PlaceAdapter(private val fragment: PlaceFragment, private val placeList: List<Place>) :
     RecyclerView.Adapter<PlaceAdapter.ViewHolder>() {
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val placeName: TextView = view.findViewById(R.id.placeName)
@@ -35,6 +35,8 @@ class PlaceAdapter(private val fragment: Fragment, private val placeList: List<P
                 putExtra("place_name", place.name)
 
             }
+            //跳转之前先将选择城市持久化记录在本地
+            fragment.viewModel.savePlace(place)
             //跳转Activity
             fragment.startActivity(intent)
             fragment.activity?.finish()
