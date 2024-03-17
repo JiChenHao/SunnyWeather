@@ -15,7 +15,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sunnyweather.android.R
-import com.sunnyweather.android.databinding.FragmentPlaceBinding
 import com.sunnyweather.android.logic.model.Place
 
 class PlaceFragment : Fragment() {

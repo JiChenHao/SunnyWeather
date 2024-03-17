@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?android:windowBackground">
-
+    <!--背景图-->
     <ImageView
         android:id="@+id/bgImageView"
         android:layout_width="match_parent"
